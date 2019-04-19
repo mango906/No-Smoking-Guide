@@ -15,18 +15,17 @@ public class LandingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try
-        {
+        try {
             this.getSupportActionBar().hide(); // Top Bar hide
+        } catch (NullPointerException e) {
         }
-        catch (NullPointerException e){}
 
         setContentView(R.layout.activity_landing);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(LandingActivity.this, MainActivity.class);
+                Intent i = new Intent(LandingActivity.this, LoginActivity.class);
                 startActivity(i);
                 finish();
             }
