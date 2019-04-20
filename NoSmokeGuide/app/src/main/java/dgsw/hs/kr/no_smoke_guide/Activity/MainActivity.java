@@ -1,8 +1,10 @@
 package dgsw.hs.kr.no_smoke_guide.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.View;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SimpleDateFormat dateSdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat daySdf = new SimpleDateFormat("d");
 
         dbHelper = new DBHelper(this, "userdb", null, 1);
 
@@ -46,5 +47,15 @@ public class MainActivity extends AppCompatActivity {
         int days = (int) ((new Date().getTime() - user.getDate()) / (1000 * 60 * 60 * 24)) + 1;
         noSmokeDay.setText("금연 " + Integer.toString(days) + "일차");
         saveTv.setText("저축한 금액 : " + days * SMOKE_MONEY);
+    }
+
+    public void smokeClock(View v){
+        Intent i = new Intent(MainActivity.this, ClockActivity.class);
+        startActivity(i);
+    }
+
+    public void smokeDiary(View v){
+        Intent i = new Intent(MainActivity.this, DiaryActivity.class);
+        startActivity(i);
     }
 }
