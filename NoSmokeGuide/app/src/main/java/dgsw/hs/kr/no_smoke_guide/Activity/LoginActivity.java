@@ -45,12 +45,14 @@ public class LoginActivity extends AppCompatActivity {
 
         User user = new User(username, password);
 
-        boolean res = dbHelper.login(user);
+        User res = dbHelper.login(user);
 
-        if(res == true){
-            Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show();
-        } else{
+        if(res == null){
             Toast.makeText(this, "아이디와 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+        } else{
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            i.putExtra("username", res.getUsername());
+            startActivity(i);
         }
     }
 

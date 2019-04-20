@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import dgsw.hs.kr.no_smoke_guide.MainActivity;
 import dgsw.hs.kr.no_smoke_guide.R;
 
 public class LandingActivity extends AppCompatActivity {

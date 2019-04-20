@@ -37,13 +37,33 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert("user", null, value);
     }
 
-    public boolean login(User user){
+    public User login(User user){
         SQLiteDatabase db = getWritableDatabase();
         String sql = "select * from user where username=? and password=?";
         Cursor cursor = db.rawQuery(sql, new String[]{user.getUsername(), user.getPassword()});
         if(cursor.moveToFirst()){
-           return true;
+           User u = new User();
+            u.setUsername(cursor.getString(cursor.getColumnIndex("username")));
+            u.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+            u.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+            u.setDate(cursor.getLong(cursor.getColumnIndex("date")));
+            return u;
         }
-        return false;
+        return null;
+    }
+
+    public User getInfo(String username){
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "select * from user where username=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{username});
+        if(cursor.moveToFirst()){
+            User u = new User();
+            u.setUsername(cursor.getString(cursor.getColumnIndex("username")));
+            u.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+            u.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+            u.setDate(cursor.getLong(cursor.getColumnIndex("date")));
+            return u;
+        }
+        return null;
     }
 }
