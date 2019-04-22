@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import dgsw.hs.kr.no_smoke_guide.Model.User;
 import dgsw.hs.kr.no_smoke_guide.R;
+import dgsw.hs.kr.no_smoke_guide.Store.Store;
 import dgsw.hs.kr.no_smoke_guide.Utils.DBHelper;
 
 public class LoginActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "아이디와 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
         } else{
             Intent i = new Intent(LoginActivity.this, MainActivity.class);
-            i.putExtra("username", res.getUsername());
+            Store.username = res.getUsername();
             startActivity(i);
         }
     }

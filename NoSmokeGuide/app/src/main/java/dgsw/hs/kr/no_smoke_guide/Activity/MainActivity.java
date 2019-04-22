@@ -12,6 +12,7 @@ import java.util.Date;
 
 import dgsw.hs.kr.no_smoke_guide.Model.User;
 import dgsw.hs.kr.no_smoke_guide.R;
+import dgsw.hs.kr.no_smoke_guide.Store.Store;
 import dgsw.hs.kr.no_smoke_guide.Utils.DBHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
         noSmokeDay = findViewById(R.id.no_smoke_day);
         saveTv = findViewById(R.id.save_tv);
 
-        username = getIntent().getStringExtra("username");
+        username = Store.username;
 
         user = dbHelper.getInfo(username);
 
-        String boldUsername = "<b>" +  getIntent().getStringExtra("username") + "</b> ";
+        String boldUsername = "<b>" +  username + "</b> ";
 
         usernameTv.setText(Html.fromHtml(boldUsername) + "님의 금연 상황");
         joinedTv.setText(dateSdf.format(user.getDate()));
@@ -56,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void smokeDiary(View v){
         Intent i = new Intent(MainActivity.this, DiaryActivity.class);
+        startActivity(i);
+    }
+
+    public void smokeBoard(View v){
+        Intent i = new Intent(MainActivity.this, BoardActivity.class);
         startActivity(i);
     }
 }

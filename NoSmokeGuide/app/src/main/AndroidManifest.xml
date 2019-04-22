@@ -20,7 +20,13 @@
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.RegisterActivity" />
         <activity android:name=".Activity.ClockActivity" />
-        <activity android:name=".Activity.DiaryActivity"></activity>
+        <activity android:name=".Activity.DiaryActivity" />
+        <activity
+            android:name=".Activity.BoardActivity"
+            android:label="@string/title_activity_board2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.PostActivity" />
+        <activity android:name=".Activity.DetailBoardActivity"></activity>
     </application>
 
 </manifest>

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">금연 길라잡이</string>
+    <string name="title_activity_board2">BoardActivity2</string>
 </resources>
