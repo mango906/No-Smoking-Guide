@@ -5,10 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 
 import java.util.ArrayList;
 
 import dgsw.hs.kr.no_smoke_guide.Model.Board;
+import dgsw.hs.kr.no_smoke_guide.Model.Comment;
+import dgsw.hs.kr.no_smoke_guide.Model.DetailBoard;
 import dgsw.hs.kr.no_smoke_guide.Model.Diary;
 import dgsw.hs.kr.no_smoke_guide.Model.User;
 
@@ -18,7 +21,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private final String USER_SQL = "create table user (username TEXT primary key, password TEXT, email TEXT, date INTEGER)";
     private final String DIARY_SQL = "create table diary (date TEXT primary key, feeling TEXT)";
-    private final String BOARD_SQL = "create table board (idx INTEGER primary key AUTOINCREMENT, username TEXT, title TEXT, content TEXT, date INTEGER)";
+    private final String BOARD_SQL = "create table board (idx INTEGER primary key AUTOINCREMENT, " +
+            "username TEXT REFERENCES \" + user + \"(idx) on update cascade, title TEXT, content TEXT, date INTEGER)";
+    private final String COMMENT_SQL = "create table comment (idx INTEGER primary key AUTOINCREMENT, " +
+            "board_idx INTEGER REFERENCES \" + board + \"(idx) on delete cascade, " +
+            "username TEXT REFERENCES \" + user + \"(idx) on update cascade, content TEXT, date INTEGER)";
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -29,13 +36,25 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DIARY_SQL);
         db.execSQL(USER_SQL);
         db.execSQL(BOARD_SQL);
-
-
+        db.execSQL(COMMENT_SQL);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        if (! db.isReadOnly()) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                String sql = String.format("PRAGMA foreign_keys = %s", "ON");
+                db.execSQL(sql);
+            } else {
+                db.setForeignKeyConstraintsEnabled(true);
+            }
+        }
     }
 
     public long register(User user) {
@@ -139,5 +158,48 @@ public class DBHelper extends SQLiteOpenHelper {
             return board;
         }
         return null;
+    }
+
+    public long setComment(Comment comment) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues value = new ContentValues();
+        value.put("board_idx", comment.getBoardIdx());
+        value.put("username", comment.getUsername());
+        value.put("content", comment.getContent());
+        value.put("date", comment.getDate());
+        return db.insert("comment", null, value);
+    }
+
+    public Comment getComment(int idx) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "select * from comment where idx=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(idx)});
+        if (cursor.moveToFirst()) {
+            Comment comment = new Comment();
+            comment.setIdx(cursor.getInt(cursor.getColumnIndex("idx")));
+            comment.setBoardIdx(cursor.getInt(cursor.getColumnIndex("board_idx")));
+            comment.setUsername(cursor.getString(cursor.getColumnIndex("username")));
+            comment.setContent(cursor.getString(cursor.getColumnIndex("content")));
+            comment.setDate(cursor.getLong(cursor.getColumnIndex("date")));
+            return comment;
+        }
+        return null;
+    }
+
+    public ArrayList<Comment> getComments(int boardIdx) {
+        ArrayList<Comment> comments = null;
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "select * from comment where board_idx=?";
+        Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(boardIdx)});
+        if (cursor.moveToNext()) {
+            Comment comment = new Comment();
+            comment.setIdx(cursor.getInt(cursor.getColumnIndex("idx")));
+            comment.setBoardIdx(cursor.getInt(cursor.getColumnIndex("board_idx")));
+            comment.setUsername(cursor.getString(cursor.getColumnIndex("username")));
+            comment.setContent(cursor.getString(cursor.getColumnIndex("content")));
+            comment.setDate(cursor.getLong(cursor.getColumnIndex("date")));
+            comments.add(comment);
+        }
+        return comments;
     }
 }
