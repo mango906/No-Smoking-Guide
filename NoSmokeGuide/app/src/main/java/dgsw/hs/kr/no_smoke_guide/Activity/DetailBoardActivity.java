@@ -25,7 +25,7 @@ public class DetailBoardActivity extends AppCompatActivity {
 
         idx = getIntent().getIntExtra("idx", -1);
 
-        dbHelper = new DBHelper(this, "boarddb", null, 1);
+        dbHelper = new DBHelper(this, "userdb", null, 1);
         sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         titleTv = findViewById(R.id.title_tv);

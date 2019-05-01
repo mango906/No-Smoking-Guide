@@ -24,7 +24,7 @@ public class DiaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
 
-        dbHelper = new DBHelper(this, "diarydb", null, 1);
+        dbHelper = new DBHelper(this, "userdb", null, 1);
 
         calendarView = findViewById(R.id.calendar_view);
 

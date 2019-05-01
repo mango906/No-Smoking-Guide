@@ -35,15 +35,12 @@ public class BoardActivity extends AppCompatActivity implements ItemClickListene
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(BoardActivity.this, PostActivity.class);
-                startActivity(i);
-            }
+        fab.setOnClickListener(view -> {
+            Intent i = new Intent(BoardActivity.this, PostActivity.class);
+            startActivity(i);
         });
 
-        dbHelper = new DBHelper(this, "boarddb", null, 1);
+        dbHelper = new DBHelper(this, "userdb", null, 1);
 
         boards = dbHelper.getBoard();
 

@@ -29,8 +29,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(DIARY_SQL);
         db.execSQL(USER_SQL);
         db.execSQL(BOARD_SQL);
-
-
     }
 
     @Override

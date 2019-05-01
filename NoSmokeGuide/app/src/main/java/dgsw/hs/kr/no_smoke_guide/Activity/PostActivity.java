@@ -22,7 +22,7 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        dbHelper = new DBHelper(this, "boarddb", null, 1);
+        dbHelper = new DBHelper(this, "userdb", null, 1);
 
         titleEt = findViewById(R.id.title_et);
         contentEt = findViewById(R.id.content_et);
