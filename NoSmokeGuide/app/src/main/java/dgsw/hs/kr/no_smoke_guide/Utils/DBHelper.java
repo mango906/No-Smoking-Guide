@@ -25,8 +25,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String BOARD_SQL = "create table board (idx INTEGER primary key AUTOINCREMENT, " +
             "username TEXT REFERENCES user(username) on update cascade, title TEXT, content TEXT, date INTEGER)";
     private final String COMMENT_SQL = "create table comment (idx INTEGER primary key AUTOINCREMENT, " +
-            "board_idx INTEGER REFERENCES \" + board + \"(idx) on delete cascade, " +
-            "username TEXT REFERENCES \" + user + \"(idx) on update cascade, content TEXT, date INTEGER)";
+            "board_idx INTEGER REFERENCES board(idx) on delete cascade, " +
+            "username TEXT REFERENCES user(username) on update cascade, content TEXT, date INTEGER)";
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -38,7 +38,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(USER_SQL);
         db.execSQL(BOARD_SQL);
         db.execSQL(COMMENT_SQL);
-
     }
 
     @Override
@@ -46,18 +45,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    @Override
-    public void onConfigure(SQLiteDatabase db) {
-        super.onConfigure(db);
-        if (! db.isReadOnly()) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                String sql = String.format("PRAGMA foreign_keys = %s", "ON");
-                db.execSQL(sql);
-            } else {
-                db.setForeignKeyConstraintsEnabled(true);
-            }
-        }
-    }
+//    @Override
+//    public void onConfigure(SQLiteDatabase db) {
+//        super.onConfigure(db);
+//        if (! db.isReadOnly()) {
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+//                String sql = String.format("PRAGMA foreign_keys = %s", "ON");
+//                db.execSQL(sql);
+//            } else {
+//                db.setForeignKeyConstraintsEnabled(true);
+//            }
+//        }
+//    }
 
     public long register(User user) {
         SQLiteDatabase db = getWritableDatabase();
@@ -70,7 +69,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public User login(User user) {
-        Log.e("board", BOARD_SQL);
         SQLiteDatabase db = getWritableDatabase();
         String sql = "select * from user where username=? and password=?";
         Cursor cursor = db.rawQuery(sql, new String[]{user.getUsername(), user.getPassword()});
@@ -190,8 +188,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Comment> getComments(int boardIdx) {
-        ArrayList<Comment> comments = null;
         SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Comment> comments = new ArrayList<>();
         String sql = "select * from comment where board_idx=?";
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(boardIdx)});
         if (cursor.moveToNext()) {

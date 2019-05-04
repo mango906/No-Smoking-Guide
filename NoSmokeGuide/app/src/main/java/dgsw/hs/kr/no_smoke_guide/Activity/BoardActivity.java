@@ -49,6 +49,7 @@ public class BoardActivity extends AppCompatActivity implements ItemClickListene
         recyclerView.setLayoutManager(layoutManager);
 
         boardAdapter = new BoardAdapter(this, boards, this);
+        boardAdapter.notifyDataSetChanged();
 
         recyclerView.setAdapter(boardAdapter);
     }

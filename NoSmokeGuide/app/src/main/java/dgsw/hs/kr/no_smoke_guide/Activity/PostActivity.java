@@ -30,7 +30,7 @@ public class PostActivity extends AppCompatActivity {
 
     }
 
-    public void post(View v){
+    public void post(View v) {
         String username = Store.username;
         String title = titleEt.getText().toString();
         String content = titleEt.getText().toString();
@@ -39,8 +39,6 @@ public class PostActivity extends AppCompatActivity {
         Board board = new Board(username, title, content, date);
 
         dbHelper.post(board);
-
-        Log.e("test", String.valueOf(dbHelper.post(board)));
 
         finish();
     }
