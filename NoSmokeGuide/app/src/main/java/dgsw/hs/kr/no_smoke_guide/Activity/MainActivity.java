@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         SimpleDateFormat dateSdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        dbHelper = new DBHelper(this, "userdb", null, 1);
+        dbHelper = new DBHelper(this, "db", null, 1);
 
         usernameTv = findViewById(R.id.username_tv);
         joinedTv = findViewById(R.id.joined_tv);

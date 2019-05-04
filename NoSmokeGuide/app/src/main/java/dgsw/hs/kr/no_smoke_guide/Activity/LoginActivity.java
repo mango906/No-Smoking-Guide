@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        dbHelper = new DBHelper(this, "userdb", null, 1);
+        dbHelper = new DBHelper(this, "db", null, 1);
 
         usernameEd = findViewById(R.id.ed_username);
         passwordEd = findViewById(R.id.ed_password);

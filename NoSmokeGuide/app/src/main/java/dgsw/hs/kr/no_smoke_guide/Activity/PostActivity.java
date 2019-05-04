@@ -2,6 +2,7 @@ package dgsw.hs.kr.no_smoke_guide.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -22,7 +23,7 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        dbHelper = new DBHelper(this, "userdb", null, 1);
+        dbHelper = new DBHelper(this, "db", null, 1);
 
         titleEt = findViewById(R.id.title_et);
         contentEt = findViewById(R.id.content_et);
@@ -38,6 +39,8 @@ public class PostActivity extends AppCompatActivity {
         Board board = new Board(username, title, content, date);
 
         dbHelper.post(board);
+
+        Log.e("test", String.valueOf(dbHelper.post(board)));
 
         finish();
     }

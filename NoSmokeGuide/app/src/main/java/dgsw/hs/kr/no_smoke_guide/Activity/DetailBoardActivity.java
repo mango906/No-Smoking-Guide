@@ -2,12 +2,17 @@ package dgsw.hs.kr.no_smoke_guide.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import dgsw.hs.kr.no_smoke_guide.Model.Board;
+import dgsw.hs.kr.no_smoke_guide.Model.Comment;
 import dgsw.hs.kr.no_smoke_guide.R;
+import dgsw.hs.kr.no_smoke_guide.Store.Store;
 import dgsw.hs.kr.no_smoke_guide.Utils.DBHelper;
 
 public class DetailBoardActivity extends AppCompatActivity {
@@ -16,6 +21,7 @@ public class DetailBoardActivity extends AppCompatActivity {
     private int idx;
     private Board board;
     private TextView titleTv, contentTv, usernameTv, dateTv;
+    private EditText commentEt;
     private SimpleDateFormat sdf;
 
     @Override
@@ -25,13 +31,14 @@ public class DetailBoardActivity extends AppCompatActivity {
 
         idx = getIntent().getIntExtra("idx", -1);
 
-        dbHelper = new DBHelper(this, "userdb", null, 1);
+        dbHelper = new DBHelper(this, "db", null, 1);
         sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         titleTv = findViewById(R.id.title_tv);
         contentTv = findViewById(R.id.content_tv);
         usernameTv = findViewById(R.id.username_tv);
         dateTv = findViewById(R.id.date_tv);
+        commentEt = findViewById(R.id.comment_et);
 
         board = dbHelper.getBoard(idx);
 
@@ -39,5 +46,13 @@ public class DetailBoardActivity extends AppCompatActivity {
         contentTv.setText(board.getContent());
         usernameTv.setText(board.getUsername());
         dateTv.setText(sdf.format(board.getDate()));
+
+        dbHelper.getComments(idx);
+    }
+
+    public void postComment(View v){
+        String commentText = commentEt.getText().toString();
+        Comment comment = new Comment(idx, Store.username, commentText, new Date().getTime());
+        dbHelper.setComment(comment);
     }
 }

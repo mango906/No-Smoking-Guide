@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String USER_SQL = "create table user (username TEXT primary key, password TEXT, email TEXT, date INTEGER)";
     private final String DIARY_SQL = "create table diary (date TEXT primary key, feeling TEXT)";
     private final String BOARD_SQL = "create table board (idx INTEGER primary key AUTOINCREMENT, " +
-            "username TEXT REFERENCES \" + user + \"(idx) on update cascade, title TEXT, content TEXT, date INTEGER)";
+            "username TEXT REFERENCES user(username) on update cascade, title TEXT, content TEXT, date INTEGER)";
     private final String COMMENT_SQL = "create table comment (idx INTEGER primary key AUTOINCREMENT, " +
             "board_idx INTEGER REFERENCES \" + board + \"(idx) on delete cascade, " +
             "username TEXT REFERENCES \" + user + \"(idx) on update cascade, content TEXT, date INTEGER)";
@@ -37,6 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(USER_SQL);
         db.execSQL(BOARD_SQL);
         db.execSQL(COMMENT_SQL);
+
     }
 
     @Override
@@ -68,6 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public User login(User user) {
+        Log.e("board", BOARD_SQL);
         SQLiteDatabase db = getWritableDatabase();
         String sql = "select * from user where username=? and password=?";
         Cursor cursor = db.rawQuery(sql, new String[]{user.getUsername(), user.getPassword()});
@@ -83,7 +86,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Diary getDiary(String date) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         String sql = "select * from diary where date=?";
         Cursor cursor = db.rawQuery(sql, new String[]{date});
         if (cursor.moveToFirst()) {
@@ -104,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public User getInfo(String username) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         String sql = "select * from user where username=?";
         Cursor cursor = db.rawQuery(sql, new String[]{username});
         if (cursor.moveToFirst()) {
@@ -119,7 +122,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<Board> getBoard(){
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query("board", null, null, null, null, null, null);
         boards = new ArrayList<>();
         while(cursor.moveToNext()){
@@ -145,7 +148,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Board getBoard(int idx){
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         String sql = "select * from board where idx=?";
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(idx)});
         if (cursor.moveToFirst()) {
@@ -171,7 +174,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Comment getComment(int idx) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         String sql = "select * from comment where idx=?";
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(idx)});
         if (cursor.moveToFirst()) {
@@ -188,7 +191,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public ArrayList<Comment> getComments(int boardIdx) {
         ArrayList<Comment> comments = null;
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         String sql = "select * from comment where board_idx=?";
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(boardIdx)});
         if (cursor.moveToNext()) {

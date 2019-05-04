@@ -40,7 +40,7 @@ public class BoardActivity extends AppCompatActivity implements ItemClickListene
             startActivity(i);
         });
 
-        dbHelper = new DBHelper(this, "userdb", null, 1);
+        dbHelper = new DBHelper(this, "db", null, 1);
 
         boards = dbHelper.getBoard();
 
