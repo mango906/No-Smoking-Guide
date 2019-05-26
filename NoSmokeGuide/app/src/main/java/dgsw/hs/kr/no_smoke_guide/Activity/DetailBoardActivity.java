@@ -34,7 +34,7 @@ public class DetailBoardActivity extends AppCompatActivity {
     private Button commentBtn;
     private SimpleDateFormat sdf;
     private RecyclerView recyclerView;
-    private ArrayList<Comment> commentArrayList;
+    private ArrayList<Comment> commentArrayList, tempArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,7 @@ public class DetailBoardActivity extends AppCompatActivity {
         dateTv.setText(sdf.format(board.getDate()));
 
         commentArrayList = dbHelper.getComments(board.getIdx());
+        tempArrayList = new ArrayList<>();
 
         recyclerView = findViewById(R.id.recycler_view);
         layoutManager = new LinearLayoutManager(this);
@@ -81,7 +82,14 @@ public class DetailBoardActivity extends AppCompatActivity {
                 return;
             }
             Snackbar.make(v, "댓글을 작성에 성공했어요!", Snackbar.LENGTH_SHORT).show();
+//            commentArrayList = dbHelper.getComments(board.getIdx());
+            tempArrayList.addAll(commentArrayList);
+            tempArrayList.add(comment);
+            commentArrayList.clear();
+            commentArrayList.addAll(tempArrayList);
             commentAdapter.notifyDataSetChanged();
+            countTv.setText("댓글수: " + commentArrayList.size());
+            commentEt.setText("");
         });
 
         countTv.setText("댓글수: " + commentArrayList.size());

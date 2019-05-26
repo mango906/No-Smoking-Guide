@@ -1,5 +1,6 @@
 package dgsw.hs.kr.no_smoke_guide.Activity;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 
 import java.util.Date;
 
+import dgsw.hs.kr.no_smoke_guide.Adapter.BoardAdapter;
 import dgsw.hs.kr.no_smoke_guide.Model.Board;
 import dgsw.hs.kr.no_smoke_guide.R;
 import dgsw.hs.kr.no_smoke_guide.Store.Store;
@@ -38,7 +40,13 @@ public class PostActivity extends AppCompatActivity {
 
         Board board = new Board(username, title, content, date);
 
-        dbHelper.post(board);
+        long idx = dbHelper.post(board);
+
+        if (idx == -1) {
+            Snackbar.make(v, "글 작성에 실패했어요...", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        Snackbar.make(v, "글 작성에 성공했어요!", Snackbar.LENGTH_SHORT).show();
 
         finish();
     }

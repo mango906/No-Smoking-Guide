@@ -55,6 +55,13 @@ public class BoardActivity extends AppCompatActivity implements ItemClickListene
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
+
+    @Override
     public void onItemClick(View v, int position) {
         Intent i = new Intent(BoardActivity.this, DetailBoardActivity.class);
         i.putExtra("idx", boards.get(position).getIdx());

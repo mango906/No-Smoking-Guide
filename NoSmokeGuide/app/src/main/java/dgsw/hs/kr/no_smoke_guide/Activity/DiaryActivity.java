@@ -47,7 +47,7 @@ public class DiaryActivity extends AppCompatActivity {
                     }).show();
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(DiaryActivity.this).create();
-                    alertDialog.setTitle(date + "기분");
+                    alertDialog.setTitle(date + " 나의 기분");
                     alertDialog.setMessage(diary.getFelling());
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                             new DialogInterface.OnClickListener() {

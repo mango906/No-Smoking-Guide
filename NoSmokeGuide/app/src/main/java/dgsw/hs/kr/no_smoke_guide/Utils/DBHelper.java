@@ -192,7 +192,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Comment> comments = new ArrayList<>();
         String sql = "select * from comment where board_idx=?";
         Cursor cursor = db.rawQuery(sql, new String[]{String.valueOf(boardIdx)});
-        if (cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             Comment comment = new Comment();
             comment.setIdx(cursor.getInt(cursor.getColumnIndex("idx")));
             comment.setBoardIdx(cursor.getInt(cursor.getColumnIndex("board_idx")));
