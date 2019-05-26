@@ -1,12 +1,14 @@
 package dgsw.hs.kr.no_smoke_guide.Lib;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 
 import com.turki.vectoranalogclockview.VectorAnalogClock;
 
-public class MyVectorClock extends VectorAnalogClock {
-    private void init() {
+public class MyAnalogClock extends VectorAnalogClock {
+    private void init(){
         //use this for the default Analog Clock (recommended)
         initializeSimple();
 
@@ -15,21 +17,26 @@ public class MyVectorClock extends VectorAnalogClock {
     }
 
     //mandatory constructor
-    public MyVectorClock(Context ctx) {
+    public MyAnalogClock(Context ctx) {
         super(ctx);
         init();
     }
 
     // the other constructors are in case you want to add the view in XML
 
-    public MyVectorClock(Context context, AttributeSet attrs) {
+    public MyAnalogClock(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public MyVectorClock(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MyAnalogClock(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public MyAnalogClock(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
 }
