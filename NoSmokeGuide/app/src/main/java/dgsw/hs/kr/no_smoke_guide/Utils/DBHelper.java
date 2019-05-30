@@ -173,6 +173,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.update("board",  value, "idx=?", new String[]{String.valueOf(idx)});
     }
 
+    public long deleteBoard(int idx) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("board", "idx=?", new String[] { String.valueOf(idx) });
+    }
+
     public long setComment(Comment comment) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues value = new ContentValues();

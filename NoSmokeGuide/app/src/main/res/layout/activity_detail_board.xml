@@ -16,19 +16,21 @@
 
 
     <ImageView
+        android:id="@+id/edit_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:onClick="updateForm"
         android:padding="8dp"
         android:src="@drawable/ic_edit"
-        app:layout_constraintEnd_toStartOf="@+id/imageView3" />
+        app:layout_constraintEnd_toStartOf="@+id/remove_iv" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/remove_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:onClick="deleteForm"
         android:padding="8dp"
         android:src="@drawable/ic_delete"
         app:layout_constraintEnd_toEndOf="@+id/title_tv" />

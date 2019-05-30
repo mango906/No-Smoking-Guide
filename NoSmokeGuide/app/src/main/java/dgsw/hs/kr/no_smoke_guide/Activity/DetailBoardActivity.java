@@ -20,6 +20,7 @@ import java.util.Date;
 import dgsw.hs.kr.no_smoke_guide.Adapter.CommentAdapter;
 import dgsw.hs.kr.no_smoke_guide.Model.Board;
 import dgsw.hs.kr.no_smoke_guide.Model.Comment;
+import dgsw.hs.kr.no_smoke_guide.Model.DetailBoard;
 import dgsw.hs.kr.no_smoke_guide.R;
 import dgsw.hs.kr.no_smoke_guide.Store.Store;
 import dgsw.hs.kr.no_smoke_guide.Utils.DBHelper;
@@ -108,6 +109,12 @@ public class DetailBoardActivity extends AppCompatActivity {
         Intent i = new Intent(DetailBoardActivity.this, PostActivity.class);
         i.putExtra("type", 1);
         i.putExtra("idx", idx);
+        startActivity(i);
+    }
+
+    public void deleteForm(View v) {
+        dbHelper.deleteBoard(idx);
+        Intent i = new Intent(DetailBoardActivity.this, BoardActivity.class);
         startActivity(i);
     }
 
