@@ -138,6 +138,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public long post(Board board){
         SQLiteDatabase db = getWritableDatabase();
         ContentValues value = new ContentValues();
+
         value.put("username", board.getUsername());
         value.put("title", board.getTitle());
         value.put("content", board.getContent());
@@ -159,6 +160,17 @@ public class DBHelper extends SQLiteOpenHelper {
             return board;
         }
         return null;
+    }
+
+    public long updateBoard(Board board, int idx){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues value = new ContentValues();
+        value.put("idx", idx);
+        value.put("username", board.getUsername());
+        value.put("title", board.getTitle());
+        value.put("content", board.getContent());
+        value.put("date", board.getDate());
+        return db.update("board",  value, "idx=?", new String[]{String.valueOf(idx)});
     }
 
     public long setComment(Comment comment) {

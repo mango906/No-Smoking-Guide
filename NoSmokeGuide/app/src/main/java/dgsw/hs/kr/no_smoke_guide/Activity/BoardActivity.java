@@ -37,6 +37,7 @@ public class BoardActivity extends AppCompatActivity implements ItemClickListene
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             Intent i = new Intent(BoardActivity.this, PostActivity.class);
+            i.putExtra("type", 0);
             startActivity(i);
         });
 

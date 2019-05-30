@@ -19,6 +19,8 @@ public class PostActivity extends AppCompatActivity {
 
     EditText titleEt, contentEt;
     private DBHelper dbHelper;
+    private int type;
+    private int boardIdx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,24 +32,50 @@ public class PostActivity extends AppCompatActivity {
         titleEt = findViewById(R.id.title_et);
         contentEt = findViewById(R.id.content_et);
 
+        type = getIntent().getIntExtra("type", -1);
+        boardIdx = getIntent().getIntExtra("idx", -1);
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(type == 1){
+            Board pastBoard = dbHelper.getBoard(boardIdx);
+            titleEt.setText(pastBoard.getTitle());
+            contentEt.setText(pastBoard.getContent());
+        }
     }
 
     public void post(View v) {
         String username = Store.username;
         String title = titleEt.getText().toString();
-        String content = titleEt.getText().toString();
+        String content = contentEt.getText().toString();
         long date = new Date().getTime();
 
         Board board = new Board(username, title, content, date);
 
-        long idx = dbHelper.post(board);
+        if (type == 0) {
+            long idx = dbHelper.post(board);
 
-        if (idx == -1) {
-            Snackbar.make(v, "글 작성에 실패했어요...", Snackbar.LENGTH_SHORT).show();
-            return;
+            if (idx == -1) {
+                Snackbar.make(v, "글 작성에 실패했어요...", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            Snackbar.make(v, "글 작성에 성공했어요!", Snackbar.LENGTH_SHORT).show();
+            finish();
+        } else if (type == 1) {
+            long idx = dbHelper.updateBoard(board, boardIdx);
+            if (idx == -1) {
+                Snackbar.make(v, "글 수정에 실패했어요...", Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+            Snackbar.make(v, "글 수정에 성공했어요!", Snackbar.LENGTH_SHORT).show();
+            finish();
         }
-        Snackbar.make(v, "글 작성에 성공했어요!", Snackbar.LENGTH_SHORT).show();
 
-        finish();
     }
 }

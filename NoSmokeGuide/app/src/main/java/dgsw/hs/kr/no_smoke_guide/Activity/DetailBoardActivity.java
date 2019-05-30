@@ -1,5 +1,6 @@
 package dgsw.hs.kr.no_smoke_guide.Activity;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -93,6 +95,20 @@ public class DetailBoardActivity extends AppCompatActivity {
         });
 
         countTv.setText("댓글수: " + commentArrayList.size());
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
+
+    public void updateForm(View v){
+        Intent i = new Intent(DetailBoardActivity.this, PostActivity.class);
+        i.putExtra("type", 1);
+        i.putExtra("idx", idx);
+        startActivity(i);
     }
 
 }
