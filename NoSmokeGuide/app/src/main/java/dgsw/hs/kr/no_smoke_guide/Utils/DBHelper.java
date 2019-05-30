@@ -220,4 +220,9 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return comments;
     }
+
+    public long deleteComment(int idx) {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete("comment", "idx=?", new String[] { String.valueOf(idx) });
+    }
 }

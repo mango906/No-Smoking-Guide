@@ -1,7 +1,9 @@
 package dgsw.hs.kr.no_smoke_guide.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import dgsw.hs.kr.no_smoke_guide.Adapter.CommentAdapter;
+import dgsw.hs.kr.no_smoke_guide.Interface.ItemClickListener;
 import dgsw.hs.kr.no_smoke_guide.Model.Board;
 import dgsw.hs.kr.no_smoke_guide.Model.Comment;
 import dgsw.hs.kr.no_smoke_guide.Model.DetailBoard;
@@ -25,7 +28,7 @@ import dgsw.hs.kr.no_smoke_guide.R;
 import dgsw.hs.kr.no_smoke_guide.Store.Store;
 import dgsw.hs.kr.no_smoke_guide.Utils.DBHelper;
 
-public class DetailBoardActivity extends AppCompatActivity {
+public class DetailBoardActivity extends AppCompatActivity implements ItemClickListener {
 
     private DBHelper dbHelper;
     private int idx;
@@ -71,7 +74,7 @@ public class DetailBoardActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        commentAdapter = new CommentAdapter(commentArrayList, this);
+        commentAdapter = new CommentAdapter(commentArrayList, this, this);
         commentAdapter.notifyDataSetChanged();
 
         recyclerView.setAdapter(commentAdapter);
@@ -86,6 +89,7 @@ public class DetailBoardActivity extends AppCompatActivity {
             }
             Snackbar.make(v, "댓글을 작성에 성공했어요!", Snackbar.LENGTH_SHORT).show();
 //            commentArrayList = dbHelper.getComments(board.getIdx());
+            tempArrayList.clear();
             tempArrayList.addAll(commentArrayList);
             tempArrayList.add(comment);
             commentArrayList.clear();
@@ -118,4 +122,33 @@ public class DetailBoardActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    public void onItemClick(View v, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("댓글");
+        builder.setMessage("삭제하시겠습니까?");
+        builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                long commentIdx = dbHelper.deleteComment(position);
+                if (commentIdx == -1) {
+                    Snackbar.make(v, "댓글을 삭제에 실패했어요...", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                Snackbar.make(v, "댓글을 삭제에 성공했어요!", Snackbar.LENGTH_SHORT).show();
+                commentArrayList.clear();
+                commentArrayList.addAll(dbHelper.getComments(idx));
+                commentAdapter.notifyDataSetChanged();
+                countTv.setText("댓글 수: " + commentArrayList.size());
+            }
+        });
+        builder.setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 }
